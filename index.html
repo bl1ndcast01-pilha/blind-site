@@ -1,711 +1,315 @@
+```html
 <!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#350711">
-  <meta name="description" content="Blind Cast Colecionáveis: medalhas exclusivas, certificados de autenticidade e histórias que dão voz à inclusão.">
-  <title>Blind Cast Colecionáveis</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      color-scheme: dark;
-      --wine: #350711;
-      --wine-light: #5b1021;
-      --red: #a71932;
-      --black: #13090b;
-      --white: #fff9f5;
-      --muted: #d7c9c7;
-      --gold: #e4b85c;
-      --line: rgb(255 249 245 / 18%);
-      --panel: rgb(49 10 18 / 88%);
-      --success: #84d69e;
-      --error: #ff9aa8;
-      font-family: "Space Grotesk", system-ui, sans-serif;
-    }
-
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      color: var(--white);
-      background:
-        radial-gradient(800px 420px at 90% 0%, rgb(167 25 50 / 38%), transparent 68%),
-        radial-gradient(600px 380px at 0% 40%, rgb(228 184 92 / 8%), transparent 70%),
-        linear-gradient(160deg, var(--wine), var(--black) 80%);
-      font-size: 16px;
-      line-height: 1.6;
-    }
-
-    a { color: inherit; }
-    button, input { font: inherit; }
-    button, .button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      min-height: 46px;
-      padding: 10px 18px;
-      border: 1px solid var(--gold);
-      border-radius: 12px;
-      background: var(--gold);
-      color: #201108;
-      font-weight: 700;
-      text-decoration: none;
-      cursor: pointer;
-    }
-    button:hover, .button:hover { filter: brightness(1.08); }
-    button:disabled { cursor: wait; opacity: .65; }
-    .button.secondary, button.secondary {
-      background: transparent;
-      color: var(--white);
-      border-color: var(--line);
-    }
-    :focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
-
-    .skip-link {
-      position: absolute;
-      left: -9999px;
-      top: 8px;
-      z-index: 20;
-      padding: 8px 12px;
-      background: var(--white);
-      color: var(--black);
-    }
-    .skip-link:focus { left: 8px; }
-
-    .wrap { width: min(1080px, calc(100% - 32px)); margin-inline: auto; }
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      background: rgb(19 9 11 / 92%);
-      border-bottom: 1px solid var(--line);
-      backdrop-filter: blur(12px);
-    }
-    .header-inner { padding: 12px 0; }
-    .brand { display: flex; align-items: center; gap: 12px; }
-    .brand-mark {
-      display: grid;
-      width: 48px;
-      height: 48px;
-      place-items: center;
-      border: 2px solid var(--gold);
-      border-radius: 14px;
-      color: var(--gold);
-      font-size: 1.2rem;
-      font-weight: 700;
-    }
-    .brand-name { margin: 0; font-size: 1.12rem; font-weight: 700; letter-spacing: .12em; }
-    .brand-subtitle { margin: 0; color: var(--muted); font-size: .82rem; }
-    nav ul {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      margin: 12px 0 0;
-      padding: 0 0 4px;
-      list-style: none;
-    }
-    nav a {
-      display: block;
-      white-space: nowrap;
-      padding: 7px 12px;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      text-decoration: none;
-      font-size: .9rem;
-    }
-    nav a[aria-current="page"] {
-      background: var(--gold);
-      border-color: var(--gold);
-      color: #201108;
-      font-weight: 700;
-    }
-
-    main { padding: 28px 0 48px; }
-    section[hidden] { display: none; }
-    section { animation: enter .2s ease-out; }
-    @keyframes enter { from { opacity: .5; transform: translateY(5px); } to { opacity: 1; transform: none; } }
-    h1, h2, h3 { line-height: 1.18; }
-    h1 { max-width: 720px; margin: 0 0 16px; font-size: clamp(2.2rem, 7vw, 4.4rem); }
-    h2 { margin: 0 0 16px; font-size: clamp(1.7rem, 4vw, 2.4rem); }
-    h3 { margin: 0 0 8px; }
-    p { color: var(--muted); }
-    .eyebrow { color: var(--gold); font-size: .82rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
-    .hero {
-      display: grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap: 32px;
-      align-items: center;
-      padding: 28px 0 42px;
-    }
-    .hero-copy > p:not(.eyebrow) { max-width: 650px; font-size: 1.12rem; }
-    .hero-art {
-      display: grid;
-      min-height: 280px;
-      place-items: center;
-      padding: 24px;
-      border: 1px solid var(--line);
-      border-radius: 28px;
-      background: radial-gradient(circle, rgb(228 184 92 / 17%), rgb(91 16 33 / 58%) 65%);
-      box-shadow: 0 18px 70px rgb(0 0 0 / 22%);
-    }
-    .medal {
-      display: grid;
-      width: min(220px, 60vw);
-      aspect-ratio: 1;
-      place-items: center;
-      border: 8px double var(--gold);
-      border-radius: 50%;
-      background: linear-gradient(145deg, #681429, #22070d);
-      color: var(--gold);
-      box-shadow: inset 0 0 0 8px rgb(228 184 92 / 14%), 0 0 45px rgb(228 184 92 / 16%);
-      text-align: center;
-    }
-    .medal strong { display: block; font-size: 1.4rem; }
-    .medal span { display: block; font-size: .75rem; letter-spacing: .16em; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 18px; }
-    .card, .panel {
-      padding: 20px;
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      background: var(--panel);
-    }
-    .card p:last-child { margin-bottom: 0; }
-    .gold { color: var(--gold); }
-    .form { max-width: 620px; }
-    label { display: block; margin: 16px 0 6px; font-weight: 700; }
-    input {
-      width: 100%;
-      padding: 13px 14px;
-      border: 2px solid #e8deda;
-      border-radius: 10px;
-      background: var(--white);
-      color: var(--black);
-    }
-    .form-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
-    .message {
-      min-height: 3em;
-      margin-top: 14px;
-      padding: 12px;
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      color: var(--muted);
-    }
-    .message.ok { border-color: var(--success); color: var(--success); }
-    .message.error { border-color: var(--error); color: var(--error); }
-    .status { color: var(--muted); font-size: .92rem; }
-    .cert-list { display: grid; gap: 14px; margin-top: 18px; }
-    .cert { padding: 18px; border: 1px solid var(--gold); border-radius: 16px; background: rgb(19 9 11 / 72%); }
-    .cert dl { display: grid; grid-template-columns: max-content 1fr; gap: 4px 14px; margin: 0; }
-    .cert dt { color: var(--muted); }
-    .cert dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
-    footer { padding: 22px 0 36px; border-top: 1px solid var(--line); color: var(--muted); font-size: .9rem; }
-    footer p { margin: 0; }
-
-    @media (max-width: 720px) {
-      .hero { grid-template-columns: 1fr; }
-      .hero-art { min-height: 230px; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; }
-    }
-  </style>
-</head>
-
-<body>
-  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
-
-  <header>
-    <div class="wrap header-inner">
-      <div class="brand">
-        <div class="brand-mark" aria-hidden="true">BC</div>
-        <div>
-          <p class="brand-name">BLIND CAST</p>
-          <p class="brand-subtitle">Colecionáveis · Campina Grande, Paraíba</p>
-        </div>
-      </div>
-      <p class="status" id="user-status" role="status" aria-live="polite">Carregando conta…</p>
-      <nav aria-label="Menu principal">
-        <ul>
-          <li><a href="#inicio" data-page="inicio">Início</a></li>
-          <li><a href="#loja" data-page="loja">Loja</a></li>
-          <li><a href="#sobre" data-page="sobre">Quem somos</a></li>
-          <li><a href="#episodios" data-page="episodios">Episódios</a></li>
-          <li><a href="#colaboradores" data-page="colaboradores">Colaboradores</a></li>
-          <li><a href="#premios" data-page="premios">Prêmios</a></li>
-          <li><a href="#resgatar" data-page="resgatar">Resgatar</a></li>
-          <li><a href="#colecao" data-page="colecao">Minha coleção</a></li>
-          <li><a href="#downloads" data-page="downloads">Downloads</a></li>
-          <li><a href="#verificar" data-page="verificar">Verificar</a></li>
-          <li><a href="#conta" data-page="conta">Entrar</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
-
-  <main id="conteudo" class="wrap" tabindex="-1">
-    <section id="inicio" aria-labelledby="title-inicio">
-      <div class="hero">
-        <div class="hero-copy">
-          <p class="eyebrow">Colecione histórias. Celebre a inclusão.</p>
-          <h1 id="title-inicio">A voz do Blind Cast na sua coleção</h1>
-          <p>Medalhas colecionáveis exclusivas, com código individual e certificado de autenticidade. Conheça o podcast que dá voz à inclusão.</p>
-          <a class="button" href="#resgatar">Resgatar uma medalha</a>
-          <a class="button secondary" href="#loja">Conhecer a loja</a>
-        </div>
-        <div class="hero-art" role="img" aria-label="Medalha colecionável dourada do Blind Cast">
-          <div class="medal"><div><span>BLIND CAST</span><strong>COLECIONÁVEIS</strong><span>EDIÇÃO ESPECIAL</span></div></div>
-        </div>
-      </div>
-      <h2>Como funciona</h2>
-      <div class="grid">
-        <article class="card"><h3><span class="gold">01.</span> Entre na sua conta</h3><p>Use sua conta Google para acessar sua coleção com segurança.</p></article>
-        <article class="card"><h3><span class="gold">02.</span> Resgate seu código</h3><p>Cada código libera uma unidade colecionável e seu certificado.</p></article>
-        <article class="card"><h3><span class="gold">03.</span> Consulte sua coleção</h3><p>Veja os itens resgatados, seus códigos e os arquivos disponíveis.</p></article>
-      </div>
-    </section>
-
-    <section id="loja" aria-labelledby="title-loja" hidden>
-      <h2 id="title-loja">Loja</h2>
-      <div class="panel"><p>Conheça as edições e os itens colecionáveis do Blind Cast.</p><p class="gold">Novas coleções serão anunciadas em breve.</p></div>
-    </section>
-
-    <section id="sobre" aria-labelledby="title-sobre" hidden>
-      <h2 id="title-sobre">Quem somos</h2>
-      <div class="panel"><p>O Blind Cast é um podcast de Campina Grande, Paraíba, que dá voz à inclusão. Esta plataforma reúne coleções, certificados e conteúdos relacionados ao projeto.</p></div>
-    </section>
-
-    <section id="episodios" aria-labelledby="title-episodios" hidden>
-      <h2 id="title-episodios">Episódios</h2>
-      <div class="panel"><p>Em breve: episódios, conversas e histórias do Blind Cast.</p></div>
-    </section>
-
-    <section id="colaboradores" aria-labelledby="title-colaboradores" hidden>
-      <h2 id="title-colaboradores">Colaboradores</h2>
-      <div class="panel"><p>Conheça as pessoas que colaboram com o Blind Cast e com suas coleções.</p></div>
-    </section>
-
-    <section id="premios" aria-labelledby="title-premios" hidden>
-      <h2 id="title-premios">Prêmios dos colaboradores</h2>
-      <div class="panel"><p>Conteúdo e prêmios especiais para colaboradores serão publicados nesta área.</p></div>
-    </section>
-
-    <section id="conta" aria-labelledby="title-conta" hidden>
-      <h2 id="title-conta">Entrar ou cadastrar</h2>
-      <div class="form panel">
-        <p>Entre com sua conta Google para resgatar códigos e consultar sua coleção.</p>
-        <div id="login-area">
-          <button type="button" id="google-login">Entrar com Google</button>
-        </div>
-        <div id="profile-area" hidden>
-          <label for="nickname">Nome ou apelido</label>
-          <input id="nickname" autocomplete="nickname" maxlength="60">
-          <div class="form-actions"><button type="button" id="save-profile">Salvar cadastro</button></div>
-        </div>
-        <div class="form-actions"><button type="button" class="secondary" id="logout" hidden>Sair da conta</button></div>
-        <div id="account-message" class="message" role="status" aria-live="polite"></div>
-      </div>
-    </section>
-
-    <section id="resgatar" aria-labelledby="title-resgatar" hidden>
-      <h2 id="title-resgatar">Resgatar código</h2>
-      <div class="form panel">
-        <p>Digite o código exclusivo que acompanha sua medalha.</p>
-        <label for="redeem-code">Código exclusivo</label>
-        <input id="redeem-code" autocomplete="off" autocapitalize="characters" placeholder="Exemplo: BC-FOF-001">
-        <div class="form-actions"><button type="button" id="redeem-button">Resgatar código</button></div>
-        <div id="redeem-message" class="message" role="status" aria-live="polite"></div>
-      </div>
-    </section>
-
-    <section id="colecao" aria-labelledby="title-colecao" hidden>
-      <h2 id="title-colecao">Minha coleção</h2>
-      <div id="collection-list" class="cert-list" role="status" aria-live="polite"></div>
-    </section>
-
-    <section id="downloads" aria-labelledby="title-downloads" hidden>
-      <h2 id="title-downloads">Downloads</h2>
-      <p>Arquivos das coleções que você resgatou.</p>
-      <div id="downloads-list" class="cert-list" role="status" aria-live="polite"></div>
-    </section>
-
-    <section id="verificar" aria-labelledby="title-verificar" hidden>
-      <h2 id="title-verificar">Verificar certificado</h2>
-      <div class="form panel">
-        <p>Consulte a validade de um certificado pelo código da unidade.</p>
-        <label for="certificate-code">Código do certificado</label>
-        <input id="certificate-code" autocomplete="off" autocapitalize="characters" placeholder="Exemplo: BC-FOF-001">
-        <div class="form-actions"><button type="button" id="verify-button">Verificar certificado</button></div>
-        <div id="verify-message" class="message" role="status" aria-live="polite"></div>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="wrap"><p>Blind Cast Colecionáveis · Campina Grande, Paraíba.</p></div>
-  </footer>
-
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import {
-      getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import {
-      getFirestore, doc, getDoc, setDoc, runTransaction,
-      collection, getDocs, query, where, serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-    // Configuração Firebase fornecida no código original.
-    const firebaseConfig = {
-      apiKey: "AIzaSyAMSU_9pETT4ACJx1NsVcnVYAT-0jno4Rc",
-      authDomain: "blind-site-b4750.firebaseapp.com",
-      projectId: "blind-site-b4750",
-      storageBucket: "blind-site-b4750.firebasestorage.app",
-      messagingSenderId: "532087876334",
-      appId: "1:532087876334:web:ba75dedb87731965b6a1ff"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    const $ = (id) => document.getElementById(id);
-    const pageIds = [
-      "inicio", "loja", "sobre", "episodios", "colaboradores",
-      "premios", "resgatar", "colecao", "downloads", "verificar", "conta"
-    ];
-
-    let currentUser = null;
-    let profile = null;
-
-    function setMessage(id, text, type = "") {
-      const element = $(id);
-      element.textContent = text;
-      element.className = "message" + (type ? " " + type : "");
-    }
-
-    function normalizedCode(value) {
-      return value.trim().toUpperCase().replace(/\s+/g, "");
-    }
-
-    function navigate() {
-      let page = (location.hash || "#inicio").slice(1);
-      if (!pageIds.includes(page)) page = "inicio";
-
-      for (const id of pageIds) $(id).hidden = id !== page;
-      document.querySelectorAll("nav a[data-page]").forEach((link) => {
-        if (link.dataset.page === page) link.setAttribute("aria-current", "page");
-        else link.removeAttribute("aria-current");
-      });
-
-      if (page === "colecao") loadCollection();
-      if (page === "downloads") loadDownloads();
-    }
-
-    function showCert(container, data, code, dateText = "") {
-      const article = document.createElement("article");
-      article.className = "cert";
-      const title = document.createElement("h3");
-      title.textContent = "Certificado de autenticidade";
-      article.append(title);
-
-      const dl = document.createElement("dl");
-      const fields = [
-        ["Coleção", data.colecao || "—"],
-        ["Personagem", data.personagem || "—"],
-        ["Unidade", `${data.numero ?? "—"} de ${data.total ?? "—"}`],
-        ["Código", code],
-        ["Resgatado em", dateText || "—"],
-        ["Status", "Unidade autenticada"]
-      ];
-
-      for (const [label, value] of fields) {
-        const dt = document.createElement("dt");
-        const dd = document.createElement("dd");
-        dt.textContent = label;
-        dd.textContent = String(value);
-        dl.append(dt, dd);
-      }
-
-      article.append(dl);
-      container.append(article);
-    }
-
-    onAuthStateChanged(auth, async (user) => {
-      currentUser = user;
-      profile = null;
-
-      if (user) {
-        try {
-          const snap = await getDoc(doc(db, "users", user.uid));
-          if (snap.exists()) profile = snap.data();
-        } catch (error) {
-          console.error("Falha ao carregar perfil:", error);
-        }
-      }
-
-      $("login-area").hidden = !!user;
-      $("logout").hidden = !user;
-      $("profile-area").hidden = !(user && !profile);
-
-      $("user-status").textContent = !user
-        ? "Você não entrou. Faça login para resgatar."
-        : profile?.apelido
-          ? `Você entrou como ${profile.apelido}.`
-          : "Você entrou. Salve seu nome ou apelido na área Entrar.";
-
-      navigate();
-    });
-
-    $("google-login").addEventListener("click", async () => {
-      try {
-        await signInWithPopup(auth, new GoogleAuthProvider());
-        setMessage("account-message", "Login realizado com sucesso.", "ok");
-      } catch (error) {
-        setMessage("account-message", `Não foi possível entrar com o Google. ${error.code || ""}`, "error");
-      }
-    });
-
-    $("logout").addEventListener("click", async () => {
-      try {
-        await signOut(auth);
-        setMessage("account-message", "Você saiu da conta.", "ok");
-      } catch {
-        setMessage("account-message", "Não foi possível sair da conta.", "error");
-      }
-    });
-
-    $("save-profile").addEventListener("click", async () => {
-      if (!currentUser) {
-        setMessage("account-message", "Entre na sua conta antes de salvar o cadastro.", "error");
-        return;
-      }
-
-      const apelido = $("nickname").value.trim();
-      if (!apelido) {
-        setMessage("account-message", "Digite um nome ou apelido.", "error");
-        return;
-      }
-
-      try {
-        await setDoc(doc(db, "users", currentUser.uid), {
-          apelido,
-          email: currentUser.email || "",
-          criadoEm: serverTimestamp()
-        }, { merge: true });
-
-        profile = { apelido };
-        $("profile-area").hidden = true;
-        $("user-status").textContent = `Você entrou como ${apelido}.`;
-        setMessage("account-message", "Cadastro salvo.", "ok");
-      } catch (error) {
-        setMessage("account-message", `Não foi possível salvar o cadastro. ${error.code || ""}`, "error");
-      }
-    });
-
-    $("redeem-button").addEventListener("click", async () => {
-      if (!currentUser) {
-        setMessage("redeem-message", "Entre na sua conta antes de resgatar um código.", "error");
-        return;
-      }
-
-      const code = normalizedCode($("redeem-code").value);
-      if (!code) {
-        setMessage("redeem-message", "Digite um código para resgatar.", "error");
-        return;
-      }
-
-      const button = $("redeem-button");
-      button.disabled = true;
-
-      try {
-        let certificateData;
-
-        await runTransaction(db, async (transaction) => {
-          const codeRef = doc(db, "codes", code);
-          const certificateRef = doc(db, "certificados", code);
-          const codeSnap = await transaction.get(codeRef);
-          const certificateSnap = await transaction.get(certificateRef);
-
-          if (!codeSnap.exists() || !certificateSnap.exists()) {
-            throw new Error("INVALID_CODE");
-          }
-          if (codeSnap.data().status !== "disponivel" || certificateSnap.data().resgatado) {
-            throw new Error("ALREADY_REDEEMED");
-          }
-
-          transaction.update(codeRef, {
-            status: "resgatado",
-            ownerId: currentUser.uid,
-            resgatadoEm: serverTimestamp()
-          });
-          transaction.update(certificateRef, {
-            resgatado: true,
-            ownerId: currentUser.uid
-          });
-          transaction.set(doc(collection(db, "historico")), {
-            codigo: code,
-            uid: currentUser.uid,
-            tipo: "resgate",
-            resultado: "sucesso",
-            em: serverTimestamp()
-          });
-
-          certificateData = certificateSnap.data();
-        });
-
-        $("redeem-code").value = "";
-        setMessage(
-          "redeem-message",
-          `Resgate concluído: ${certificateData.personagem}, unidade ${certificateData.numero} de ${certificateData.total}. Consulte Minha coleção.`,
-          "ok"
-        );
-      } catch (error) {
-        if (error.message === "INVALID_CODE") {
-          setMessage("redeem-message", "Código inválido. Confira as letras e os números.", "error");
-        } else if (error.message === "ALREADY_REDEEMED") {
-          setMessage("redeem-message", "Este código já foi resgatado ou não está disponível.", "error");
-        } else {
-          setMessage("redeem-message", `Não foi possível resgatar o código. ${error.code || ""}`, "error");
-        }
-      } finally {
-        button.disabled = false;
-      }
-    });
-
-    async function loadCollection() {
-      const container = $("collection-list");
-      container.replaceChildren();
-
-      if (!currentUser) {
-        container.textContent = "Entre na sua conta para consultar sua coleção.";
-        return;
-      }
-
-      container.textContent = "Carregando sua coleção…";
-      try {
-        const results = await getDocs(
-          query(collection(db, "codes"), where("ownerId", "==", currentUser.uid))
-        );
-        container.replaceChildren();
-
-        if (results.empty) {
-          container.textContent = "Sua coleção está vazia. Resgate um código para começar.";
-          return;
-        }
-
-        results.forEach((item) => {
-          const data = item.data();
-          const date = data.resgatadoEm?.toDate
-            ? data.resgatadoEm.toDate().toLocaleDateString("pt-BR")
-            : "—";
-          showCert(container, data, item.id, date);
-        });
-      } catch (error) {
-        container.textContent = `Não foi possível carregar sua coleção. ${error.code || ""}`;
-      }
-    }
-
-    async function loadDownloads() {
-      const container = $("downloads-list");
-      container.replaceChildren();
-
-      if (!currentUser) {
-        container.textContent = "Entre na sua conta para consultar seus downloads.";
-        return;
-      }
-
-      container.textContent = "Carregando downloads…";
-      try {
-        const results = await getDocs(
-          query(collection(db, "codes"), where("ownerId", "==", currentUser.uid))
-        );
-
-        if (results.empty) {
-          container.textContent = "Resgate um código para liberar os downloads da sua coleção.";
-          return;
-        }
-
-        const collectionIds = [...new Set(results.docs.map((item) => item.data().colId).filter(Boolean))];
-        container.replaceChildren();
-
-        for (const collectionId of collectionIds) {
-          const collectionSnap = await getDoc(doc(db, "colecoes", collectionId));
-          if (!collectionSnap.exists()) continue;
-
-          const data = collectionSnap.data();
-          const article = document.createElement("article");
-          article.className = "cert";
-
-          const heading = document.createElement("h3");
-          heading.textContent = `${data.personagem || "Coleção"} — ${data.nome || collectionId}`;
-          article.append(heading);
-
-          const files = Array.isArray(data.arquivos) ? data.arquivos : [];
-          if (!files.length) {
-            const note = document.createElement("p");
-            note.textContent = "Os arquivos desta coleção ainda não foram publicados.";
-            article.append(note);
-          } else {
-            const list = document.createElement("ul");
-            for (const file of files) {
-              if (!file.id) continue;
-              const item = document.createElement("li");
-              const link = document.createElement("a");
-              link.href = `https://drive.google.com/uc?export=download&id=${encodeURIComponent(file.id)}`;
-              link.target = "_blank";
-              link.rel = "noopener noreferrer";
-              link.textContent = `Baixar ${file.nome || "arquivo"} (${file.tipo || "arquivo"})`;
-              item.append(link);
-              list.append(item);
-            }
-            article.append(list);
-          }
-          container.append(article);
-        }
-
-        if (!container.childElementCount) {
-          container.textContent = "Os arquivos ainda não foram publicados.";
-        }
-      } catch (error) {
-        container.textContent = `Não foi possível carregar os downloads. ${error.code || ""}`;
-      }
-    }
-
-    $("verify-button").addEventListener("click", async () => {
-      const code = normalizedCode($("certificate-code").value);
-      if (!code) {
-        setMessage("verify-message", "Digite o código do certificado.", "error");
-        return;
-      }
-
-      try {
-        const snap = await getDoc(doc(db, "certificados", code));
-        if (!snap.exists()) {
-          setMessage("verify-message", "Código não encontrado. Confira e tente novamente.", "error");
-          return;
-        }
-
-        const data = snap.data();
-        const ownerStatus = data.resgatado
-          ? "Esta unidade já foi resgatada."
-          : "Esta unidade ainda está disponível.";
-        setMessage(
-          "verify-message",
-          `Certificado válido: ${data.personagem}, unidade ${data.numero} de ${data.total}. ${ownerStatus}`,
-          "ok"
-        );
-      } catch (error) {
-        setMessage("verify-message", `Não foi possível verificar o certificado. ${error.code || ""}`, "error");
-      }
-    });
-
-    window.addEventListener("hashchange", navigate);
-    navigate();
-  </script>
-</body>
-</html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#3a0510"><title>Blind Site</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--text:#f6f1f2;--silver:#d5d9de;--green:#58c27d;--line:rgba(213,217,222,.22);--panel:rgba(74,7,20,.72);--btn:#f6f1f2;--btnt:#3a0510;color-scheme:dark;box-sizing:border-box}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--text);font:17px/1.6 "Space Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;background:radial-gradient(900px 500px at 85% -5%,#8a1230,transparent 60%),radial-gradient(700px 400px at 0 25%,rgba(88,194,125,.10),transparent 60%),linear-gradient(180deg,#3a0510,#22030a 75%) fixed}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;background-image:radial-gradient(rgba(213,217,222,.09) 1.6px,transparent 1.7px);background-size:24px 24px;-webkit-mask-image:linear-gradient(180deg,#000,transparent 80%);mask-image:linear-gradient(180deg,#000,transparent 80%)}
+.wrap{max-width:1040px;margin:0 auto;padding:0 16px;position:relative}
+header{position:sticky;top:0;z-index:5;background:rgba(34,3,10,.86);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:calc(10px + env(safe-area-inset-top,0px)) 0 8px}
+.top{display:flex;align-items:center;gap:12px}
+.top img{width:52px;height:52px;border-radius:12px;object-fit:cover;border:1px solid var(--line)}
+.logo{margin:0;font-size:1.3rem;letter-spacing:.24em;text-transform:uppercase;font-weight:700}
+.tag{margin:0;color:var(--silver);font-size:.85rem}
+.who{margin:8px 0 0;color:var(--silver);font-size:.9rem}
+nav ul{list-style:none;display:flex;gap:8px;padding:0 0 6px;margin:10px 0 0;overflow-x:auto}
+nav a{display:block;white-space:nowrap;padding:9px 14px;border:1px solid var(--line);border-radius:999px;color:var(--text);text-decoration:none;font-weight:600;font-size:.95rem}
+nav a[aria-current="page"]{background:var(--btn);color:var(--btnt);border-color:var(--btn)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:4px solid var(--green);outline-offset:2px}
+.skip{position:absolute;left:-999px}.skip:focus{left:8px;top:8px;background:#fff;color:#000;padding:8px;z-index:9}
+main{padding:20px 0 40px}main:focus{outline:none}
+section[hidden]{display:none}
+h1,h2,h3{line-height:1.15;margin:0 0 .5em}h1{font-size:clamp(2rem,6vw,3.2rem)}h2{font-size:1.7rem;letter-spacing:.02em}
+h2:focus{outline:none}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center;padding:12px 0 28px}
+@media(max-width:720px){.hero{grid-template-columns:1fr}}
+.eyebrow{color:var(--green);letter-spacing:.2em;text-transform:uppercase;font-size:.8rem;font-weight:700;margin:0 0 8px}
+.lead{color:var(--silver);font-size:1.1rem}
+.medal{position:relative;margin:0;padding:22px;border-radius:26px;border:1px solid var(--line);background:radial-gradient(circle at 50% 30%,rgba(213,217,222,.18),rgba(74,7,20,.85) 70%);box-shadow:0 0 70px rgba(200,32,60,.28)}
+.medal img.m{width:100%;max-width:340px;display:block;margin:0 auto}
+.medal img.wm{position:absolute;right:14px;top:14px;width:17%;border-radius:8px;opacity:.55;pointer-events:none}
+.medal figcaption{text-align:center;color:var(--silver);font-size:.9rem;margin-top:8px}
+.btn,button{display:inline-block;margin:12px 10px 0 0;padding:13px 22px;font:inherit;font-weight:700;border-radius:12px;border:1px solid var(--btn);background:var(--btn);color:var(--btnt);cursor:pointer;text-decoration:none}
+.btn.alt{background:transparent;color:var(--text);border-color:var(--silver)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px;margin-top:14px}
+.card,.cert{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;margin:0}
+.cert{margin:0 0 16px}
+.card img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:12px;background:#1b0207;margin-bottom:10px}
+.card h3{font-size:1.15rem}.card p{margin:0 0 8px;color:var(--silver)}.preco{color:var(--green)!important;font-weight:700;font-size:1.2rem}
+label{display:block;font-weight:700;margin:16px 0 6px}
+input,select,textarea{width:100%;padding:13px;font:inherit;border-radius:10px;border:2px solid var(--silver);background:#fff;color:#1a0309}
+.msg{margin-top:14px;padding:12px;border-radius:10px;border:2px solid var(--silver);min-height:3em}.msg.ok{border-color:var(--green)}.msg.err{border-color:#ffb3c0}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.cert dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 14px}.cert dt{color:var(--silver)}.cert dd{margin:0;font-weight:600}
+details{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin:0 0 14px}summary{cursor:pointer;font-weight:700;font-size:1.1rem;padding:6px 0}
+footer{color:var(--silver);font-size:.9rem;padding:20px 0 40px;border-top:1px solid var(--line)}
+</style></head><body>
+<a class="skip" href="#conteudo">Pular para o conteúdo</a>
+<header><div class="wrap">
+<div class="top"><img src="logo.jpg" alt="Logomarca do Blind Cast: nome em letras prateadas, com uma bengala branca no lugar do I, sobre fundo vermelho vinho"><div><p class="logo">Blind Site</p><p class="tag">Blind Cast · Campina Grande, Paraíba</p></div></div>
+<p class="who" id="quem" role="status" aria-live="polite">Você não entrou. Faça login para resgatar.</p>
+<nav aria-label="Menu principal"><ul><li><a href="#inicio" data-v="inicio">Início</a></li><li><a href="#loja" data-v="loja">Loja</a></li><li><a href="#quemsomos" data-v="quemsomos">Quem somos</a></li><li><a href="#episodios" data-v="episodios">Episódios</a></li><li><a href="#colaboradores" data-v="colaboradores">Colaboradores</a></li><li id=liprem hidden><a href="#premios" data-v="premios">Prêmios</a></li><li><a href="#resgatar" data-v="resgatar">Resgatar</a></li><li><a href="#minha" data-v="minha">Minha coleção</a></li><li><a href="#downloads" data-v="downloads">Downloads</a></li><li><a href="#verificar" data-v="verificar">Verificar</a></li><li><a href="#entrar" data-v="entrar">Entrar</a></li><li id=liadm hidden><a href="#admin" data-v="admin">Administração</a></li></ul></nav></div></header>
+<main id="conteudo" tabindex="-1"><div class="wrap">
+<section id="inicio" aria-labelledby="t_inicio">
+<div class="hero"><div><p class="eyebrow">Medalha nº 1 · Edição de estreia</p>
+<h1 id="t_inicio" tabindex="-1">A voz do Blind Cast na sua coleção</h1>
+<p class="lead">Resgate medalhas Bubble Head exclusivas, com número e certificado de autenticidade, e acompanhe o podcast que dá voz à inclusão.</p>
+<a class="btn" href="#resgatar">Resgatar medalha</a><a class="btn alt" href="#loja">Visitar a loja</a></div>
+<figure class="medal"><img class="m" src="medalha.webp" alt="Caricatura 3D de Verônica Ryos sorrindo, com chapéu de cangaceira marrom com estrela dourada, cabelo preto longo, colete de couro e microfone, com o nome dela e a marca Blind Cast em dourado"><img class="wm" src="logo.jpg" alt=""><figcaption>Verônica Ryos, medalha nº 1</figcaption></figure></div>
+<div class="grid"><article class="card"><h3>1. Cadastre-se</h3><p>Entre com sua conta Google e escolha um apelido.</p></article><article class="card"><h3>2. Resgate o código</h3><p>Cada código vale uma única unidade, ligada à sua conta.</p></article><article class="card"><h3>3. Baixe e compartilhe</h3><p>Receba os arquivos da sua medalha e consulte o certificado.</p></article></div>
+</section>
+<section id="loja" aria-labelledby="t_loja" hidden><h2 id="t_loja" tabindex="-1">Loja</h2><div id="c_loja"></div></section><section id="quemsomos" aria-labelledby="t_quemsomos" hidden><h2 id="t_quemsomos" tabindex="-1">Quem somos</h2><div id="c_quemsomos"></div></section><section id="episodios" aria-labelledby="t_episodios" hidden><h2 id="t_episodios" tabindex="-1">Episódios</h2><div id="c_episodios"></div></section><section id="colaboradores" aria-labelledby="t_colaboradores" hidden><h2 id="t_colaboradores" tabindex="-1">Colaboradores</h2><div id="c_colaboradores"></div></section><section id="premios" aria-labelledby="t_premios" hidden><h2 id="t_premios" tabindex="-1">Prêmios dos colaboradores</h2><div id="c_premios"></div></section>
+<section id="entrar" aria-labelledby="t_entrar" hidden><h2 id="t_entrar" tabindex="-1">Entrar ou cadastrar</h2><div id="blogin"><button type="button" id="bgoogle">Entrar com Google</button></div><div id="perfil" hidden><label for="apelido">Nome ou apelido</label><input id="apelido" autocomplete="nickname"><button type="button" id="bapelido">Salvar cadastro</button></div><button type="button" id="bsair" hidden>Sair da conta</button><div id="msge" class="msg" role="status" aria-live="polite"></div></section>
+<section id="resgatar" aria-labelledby="t_resgatar" hidden><h2 id="t_resgatar" tabindex="-1">Resgatar código</h2><label for="cod">Código exclusivo</label><input id="cod" autocomplete="off" autocapitalize="characters" placeholder="Exemplo: BC-TST-001"><button type="button" id="bres">Resgatar</button><div id="msgr" class="msg" role="status" aria-live="polite"></div></section>
+<section id="minha" aria-labelledby="t_minha" hidden><h2 id="t_minha" tabindex="-1">Minha coleção</h2><div id="lista" role="status" aria-live="polite"></div></section>
+<section id="downloads" aria-labelledby="t_downloads" hidden><h2 id="t_downloads" tabindex="-1">Downloads</h2><p>Arquivos dos Bubble Heads que você resgatou.</p><div id="dl" role="status" aria-live="polite"></div></section>
+<section id="verificar" aria-labelledby="t_verificar" hidden><h2 id="t_verificar" tabindex="-1">Verificar certificado</h2><label for="cv">Código do certificado</label><input id="cv" autocomplete="off" autocapitalize="characters"><button type="button" id="bver">Verificar</button><div id="msgv" class="msg" role="status" aria-live="polite"></div></section>
+<section id="admin" aria-labelledby="t_admin" hidden><h2 id="t_admin" tabindex="-1">Administração</h2>
+<details open><summary>Conteúdo das abas</summary>
+<p>Cada item novo aparece na aba escolhida. A imagem vem de um link do Google Drive compartilhado como "qualquer pessoa com o link".</p>
+<label for="c_aba">Aba</label><select id="c_aba"><option value="quemsomos">Quem somos</option><option value="episodios">Episódios</option><option value="colaboradores">Colaboradores</option><option value="loja">Loja</option><option value="premios">Prêmios dos colaboradores</option></select>
+<label for="c_tit">Título do item</label><input id="c_tit">
+<label for="c_txt">Texto: descrição do item, ou texto de apresentação da aba</label><textarea id="c_txt" rows="4"></textarea>
+<label for="c_img">Link da imagem no Google Drive. Pode deixar vazio</label><input id="c_img" autocomplete="off">
+<label for="c_alt">Descrição da imagem para leitor de tela. Obrigatória se houver imagem</label><input id="c_alt">
+<label for="c_ext">Preço ou link, opcional</label><input id="c_ext" autocomplete="off">
+<div class="row"><button type="button" id="bitem">Adicionar item à aba</button><button type="button" id="btexto">Salvar texto de apresentação da aba</button><button type="button" id="blistar">Mostrar itens da aba para remover</button></div>
+<div id="c_lista"></div><div id="msgc" class="msg" role="status" aria-live="polite"></div></details>
+<details><summary>Colaboradores e prêmios</summary>
+<p>O colaborador liberado enxerga a aba Prêmios ao entrar com o Gmail dele. As medalhas prêmio são publicadas na aba "Prêmios dos colaboradores", acima.</p>
+<label for="eq_email">E-mail Gmail do colaborador</label><input id="eq_email" type="email" autocomplete="off">
+<label for="eq_nome">Nome do colaborador</label><input id="eq_nome">
+<div class="row"><button type="button" id="bequipe">Liberar colaborador</button><button type="button" id="bcons4">Ver colaboradores liberados</button></div></details>
+<details><summary>Medalhas e coleções</summary>
+<button type="button" id="bseed">Criar coleção de teste da Verônica</button>
+<h3 style="margin-top:20px">Nova coleção</h3>
+<label for="a_cid">Identificador da coleção, sem espaços. Exemplo: FOF</label><input id="a_cid" autocomplete="off">
+<label for="a_cnome">Nome da coleção</label><input id="a_cnome">
+<label for="a_pers">Nome do personagem</label><input id="a_pers">
+<label for="a_total">Quantidade de unidades</label><input id="a_total" inputmode="numeric">
+<label for="a_img">Link da imagem principal no Google Drive</label><input id="a_img" autocomplete="off">
+<label for="a_alt">Descrição da imagem. Obrigatória se houver imagem</label><input id="a_alt">
+<button type="button" id="bnova">Criar coleção e gerar códigos</button>
+<h3 style="margin-top:20px">Arquivos para download</h3>
+<label for="f_cid">Identificador da coleção</label><input id="f_cid" autocomplete="off">
+<label for="f_nome">Nome do arquivo. Exemplo: Acenando</label><input id="f_nome">
+<label for="f_tipo">Tipo do arquivo. Digite PNG, WEBP ou GIF</label><input id="f_tipo" autocomplete="off">
+<label for="f_link">Link do arquivo no Google Drive</label><input id="f_link" autocomplete="off">
+<button type="button" id="bfile">Adicionar arquivo</button>
+<h3 style="margin-top:20px">Bloquear código</h3>
+<label for="b_cod">Código a bloquear</label><input id="b_cod" autocomplete="off" autocapitalize="characters">
+<button type="button" id="bbloq">Bloquear código</button><div id="msga" class="msg" role="status" aria-live="polite"></div></details>
+<details><summary>Consultas</summary><div class="row"><button type="button" id="bcons1">Ver códigos</button><button type="button" id="bcons2">Ver colecionadores</button><button type="button" id="bcons3">Ver histórico</button></div><div id="cons" class="msg" role="status" aria-live="polite"></div></details></section>
+</div></main>
+<footer><div class="wrap">Blind Site · Blind Cast, Campina Grande, Paraíba.</div></footer>
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {getAuth,onAuthStateChanged,signInWithPopup,GoogleAuthProvider,signOut} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {getFirestore,doc,getDoc,setDoc,runTransaction,collection,getDocs,query,where,serverTimestamp,writeBatch,updateDoc,arrayUnion,limit} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+const app=initializeApp({apiKey:"AIzaSyAMSU_9pETT4ACJx1NsVcnVYAT-0jno4Rc",authDomain:"blind-site-b4750.firebaseapp.com",projectId:"blind-site-b4750",storageBucket:"blind-site-b4750.firebasestorage.app",messagingSenderId:"532087876334",appId:"1:532087876334:web:ba75dedb87731965b6a1ff"});
+const auth=getAuth(app),db=getFirestore(app);
+const ADMIN="bl1ndcast01@gmail.com";
+const $=id=>document.getElementById(id);
+let user=null,perfil=null;
+const norm=s=>s.trim().toUpperCase().replace(/\s+/g,"");
+function msg(id,t,c){const e=$(id);e.className="msg "+c;e.textContent=t}
+const isAdmin=()=>user&&user.emailVerified&&user.email.toLowerCase()===ADMIN;
+function show(){
+ let v=(location.hash||"#inicio").slice(1); if(!$(v))v="inicio"; if(v==="admin"&&!isAdmin())v="inicio";
+ ["inicio","loja","quemsomos","episodios","colaboradores","premios","entrar","resgatar","minha","downloads","verificar","admin"].forEach(i=>$(i).hidden=i!==v);
+ document.querySelectorAll("nav a").forEach(a=>a.dataset.v===v?a.setAttribute("aria-current","page"):a.removeAttribute("aria-current"));
+ if(v==="minha")render();if(v==="downloads")renderDl();if(SECS[v])renderPagina(v);
+}
+onAuthStateChanged(auth,async u=>{
+ user=u;perfil=null;
+ if(u){try{const s=await getDoc(doc(db,"users",u.uid));perfil=s.exists()?s.data():null}catch(e){}}
+ $("liadm").hidden=!isAdmin();
+ $("blogin").hidden=!!u;$("bsair").hidden=!u;$("perfil").hidden=!(u&&!perfil);
+ $("quem").textContent=!u?"Você não entrou. Faça login para resgatar.":perfil?"Você entrou como "+perfil.apelido+".":"Você entrou. Falta salvar seu nome ou apelido em Entrar ou cadastrar.";
+ show();
+});
+$("bgoogle").onclick=async()=>{try{await signInWithPopup(auth,new GoogleAuthProvider())}catch(e){msg("msge","Não foi possível entrar com o Google. Código: "+(e.code||"desconhecido"),"err")}};
+$("bsair").onclick=async()=>{await signOut(auth);msg("msge","Você saiu da conta.","ok")};
+$("bapelido").onclick=async()=>{
+ const a=$("apelido").value.trim(); if(!a){msg("msge","Digite um nome ou apelido.","err");return}
+ try{await setDoc(doc(db,"users",user.uid),{apelido:a,email:user.email,criadoEm:serverTimestamp()});perfil={apelido:a};
+  $("perfil").hidden=true;$("quem").textContent="Você entrou como "+a+".";msg("msge","Cadastro salvo. Agora você pode resgatar códigos.","ok")}
+ catch(e){msg("msge","Não foi possível salvar o cadastro. Código: "+(e.code||"desconhecido"),"err")}
+};
+$("bres").onclick=async()=>{
+ if(!user){msg("msgr","Para resgatar, primeiro entre na sua conta em Entrar ou cadastrar.","err");return}
+ if(!perfil){msg("msgr","Antes de resgatar, salve seu nome ou apelido em Entrar ou cadastrar.","err");return}
+ const c=norm($("cod").value); if(!c){msg("msgr","Digite um código para resgatar.","err");return}
+ try{
+  let d;
+  await runTransaction(db,async tx=>{
+   const cr=doc(db,"certificados",c),kr=doc(db,"codes",c);
+   const cs=await tx.get(cr); if(!cs.exists())throw new Error("INVALIDO"); if(cs.data().resgatado)throw new Error("USADO");
+   const ks=await tx.get(kr); if(!ks.exists()||ks.data().status!=="disponivel")throw new Error("USADO");
+   tx.update(kr,{status:"resgatado",ownerId:user.uid,resgatadoEm:serverTimestamp()});
+   tx.update(cr,{resgatado:true});
+   tx.set(doc(collection(db,"historico")),{codigo:c,uid:user.uid,tipo:"resgate",resultado:"sucesso",em:serverTimestamp()});
+   d=cs.data();
+  });
+  msg("msgr","Bubble Head resgatado com sucesso. "+d.personagem+", unidade "+d.numero+" de "+d.total+". Veja em Minha coleção.","ok");$("cod").value="";
+ }catch(e){
+  if(e.message==="INVALIDO")msg("msgr","Código inválido. Confira as letras e os números e tente de novo.","err");
+  else if(e.message==="USADO")msg("msgr","Este código já foi resgatado.","err");
+  else msg("msgr","Não foi possível resgatar agora. Código: "+(e.code||"desconhecido"),"err");
+ }
+};
+async function render(){
+ const b=$("lista");
+ if(!user){b.innerHTML='<p>Entre na sua conta para ver a coleção.</p>';return}
+ try{
+  const s=await getDocs(query(collection(db,"codes"),where("ownerId","==",user.uid)));
+  if(s.empty){b.innerHTML='<p>Sua coleção está vazia. Resgate um código para começar.</p>';return}
+  b.innerHTML=s.docs.map(x=>{const k=x.data(),dt=k.resgatadoEm?k.resgatadoEm.toDate().toLocaleDateString("pt-BR"):"hoje";
+   return '<article class="cert"><h3>Certificado de autenticidade</h3><dl><dt>Coleção</dt><dd>'+k.colecao+'</dd><dt>Personagem</dt><dd>'+k.personagem+'</dd><dt>Unidade</dt><dd>'+k.numero+' de '+k.total+'</dd><dt>Código</dt><dd>'+x.id+'</dd><dt>Resgatado em</dt><dd>'+dt+'</dd><dt>Status</dt><dd>Unidade autenticada</dd></dl></article>'}).join("");
+ }catch(e){b.textContent="Não foi possível carregar a coleção. Código: "+(e.code||"desconhecido")}
+}
+$("bver").onclick=async()=>{
+ const c=norm($("cv").value); if(!c){msg("msgv","Digite um código para verificar.","err");return}
+ try{const s=await getDoc(doc(db,"certificados",c));
+  if(!s.exists())msg("msgv","Código não encontrado.","err");
+  else{const d=s.data();msg("msgv","Certificado válido. "+d.personagem+", unidade "+d.numero+" de "+d.total+". "+(d.resgatado?"Esta unidade já tem proprietário.":"Esta unidade ainda está disponível."),"ok")}
+ }catch(e){msg("msgv","Não foi possível verificar agora.","err")}
+};
+$("bseed").onclick=async()=>{
+ if(!isAdmin())return;
+ try{const b=writeBatch(db);
+  for(let n=1;n<=3;n++){const c="BC-TST-00"+n,base={colecao:"Teste",colId:"TST",personagem:"Verônica Ryos",numero:n,total:3};
+   b.set(doc(db,"certificados",c),{...base,resgatado:false});b.set(doc(db,"codes",c),{...base,status:"disponivel",ownerId:null});}
+  b.set(doc(db,"colecoes","TST"),{nome:"Teste",personagem:"Verônica Ryos",total:3,imagemId:null,imagemAlt:"",arquivos:[],status:"ativa",criadoEm:serverTimestamp()});
+  await b.commit();msg("msga","Coleção de teste criada com 3 códigos.","ok")}
+ catch(e){msg("msga","Não foi possível criar. Código: "+(e.code||"desconhecido"),"err")}
+};
+
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function driveId(u){u=(u||"").trim();const m=/\/d\/([\w-]+)/.exec(u)||/[?&]id=([\w-]+)/.exec(u);return m?m[1]:(/^[\w-]{20,}$/.test(u)?u:null)}
+const dlUrl=id=>"https://drive.google.com/uc?export=download&id="+id;
+async function renderDl(){
+ const b=$("dl");
+ if(!user){b.innerHTML="<p>Entre na sua conta para ver seus downloads.</p>";return}
+ try{
+  const s=await getDocs(query(collection(db,"codes"),where("ownerId","==",user.uid)));
+  if(s.empty){b.innerHTML="<p>Você ainda não tem Bubble Heads. Resgate um código para liberar os arquivos.</p>";return}
+  const ids=[...new Set(s.docs.map(x=>x.data().colId).filter(Boolean))];let out="";
+  for(const id of ids){
+   const c=await getDoc(doc(db,"colecoes",id));if(!c.exists())continue;const d=c.data();
+   const arqs=(d.arquivos||[]).map(a=>'<li><a href="'+esc(dlUrl(a.id))+'" target="_blank" rel="noopener" style="color:var(--text)">Baixar '+esc(a.nome)+', formato '+esc(a.tipo)+'</a></li>').join("");
+   out+='<article class="cert"><h3>'+esc(d.personagem)+', coleção '+esc(d.nome)+'</h3>'+(arqs?'<ul>'+arqs+'</ul>':'<p>Os arquivos desta coleção ainda não foram publicados.</p>')+'</article>';
+  }
+  b.innerHTML=out||"<p>Os arquivos ainda não foram publicados.</p>";
+ }catch(e){b.textContent="Não foi possível carregar os downloads. Código: "+(e.code||"desconhecido")}
+}
+$("bnova").onclick=async()=>{
+ if(!isAdmin())return;
+ const cid=$("a_cid").value.trim().toUpperCase().replace(/[^A-Z0-9]/g,""),nome=$("a_cnome").value.trim(),pers=$("a_pers").value.trim(),total=parseInt($("a_total").value,10),alt=$("a_alt").value.trim(),im=$("a_img").value.trim();
+ if(!cid||!nome||!pers||!(total>0&&total<=500)){msg("msga","Preencha identificador, nome, personagem e uma quantidade entre 1 e 500.","err");return}
+ if(im&&!alt){msg("msga","Para usar uma imagem, escreva a descrição dela para leitor de tela.","err");return}
+ const iid=im?driveId(im):null; if(im&&!iid){msg("msga","Não consegui ler o link do Google Drive.","err");return}
+ try{
+  const ex=await getDoc(doc(db,"colecoes",cid));if(ex.exists()){msg("msga","Já existe uma coleção com este identificador.","err");return}
+  const b=writeBatch(db);
+  b.set(doc(db,"colecoes",cid),{nome,personagem:pers,total,imagemId:iid||null,imagemAlt:alt||"",arquivos:[],status:"ativa",criadoEm:serverTimestamp()});
+  for(let n=1;n<=total;n++){const c="BC-"+cid+"-"+String(n).padStart(3,"0"),base={colecao:nome,colId:cid,personagem:pers,numero:n,total};
+   b.set(doc(db,"certificados",c),{...base,resgatado:false});b.set(doc(db,"codes",c),{...base,status:"disponivel",ownerId:null});}
+  await b.commit();
+  msg("msga","Coleção criada com "+total+" códigos, de BC-"+cid+"-001 a BC-"+cid+"-"+String(total).padStart(3,"0")+".","ok");
+ }catch(e){msg("msga","Não foi possível criar. Código: "+(e.code||"desconhecido"),"err")}
+};
+$("bfile").onclick=async()=>{
+ if(!isAdmin())return;
+ const cid=$("f_cid").value.trim().toUpperCase(),nome=$("f_nome").value.trim(),tipo=$("f_tipo").value.trim().toUpperCase(),id=driveId($("f_link").value);
+ if(!cid||!nome||!["PNG","WEBP","GIF"].includes(tipo)||!id){msg("msga","Confira: identificador, nome, tipo PNG, WEBP ou GIF, e um link válido do Drive.","err");return}
+ try{await updateDoc(doc(db,"colecoes",cid),{arquivos:arrayUnion({nome,tipo,id})});msg("msga","Arquivo "+nome+" adicionado à coleção "+cid+".","ok")}
+ catch(e){msg("msga","Não foi possível adicionar. Confira o identificador. Código: "+(e.code||"desconhecido"),"err")}
+};
+$("bbloq").onclick=async()=>{
+ if(!isAdmin())return;const c=norm($("b_cod").value);if(!c){msg("msga","Digite o código a bloquear.","err");return}
+ try{const r=doc(db,"codes",c),s=await getDoc(r);
+  if(!s.exists()){msg("msga","Código não encontrado.","err");return}
+  if(s.data().status!=="disponivel"){msg("msga","Só é possível bloquear códigos disponíveis. Este está "+s.data().status+".","err");return}
+  const b=writeBatch(db);b.update(r,{status:"bloqueado"});b.update(doc(db,"certificados",c),{resgatado:true});
+  b.set(doc(collection(db,"historico")),{codigo:c,uid:user.uid,tipo:"bloqueio",resultado:"sucesso",em:serverTimestamp()});
+  await b.commit();msg("msga","Código "+c+" bloqueado.","ok");
+ }catch(e){msg("msga","Não foi possível bloquear. Código: "+(e.code||"desconhecido"),"err")}
+};
+async function consulta(col,titulo,fmt){
+ if(!isAdmin())return;
+ try{const s=await getDocs(query(collection(db,col),limit(100)));
+  $("cons").className="msg";$("cons").innerHTML="<strong>"+titulo+": "+s.size+" encontrados.</strong><ul>"+s.docs.map(x=>"<li>"+fmt(x.id,x.data())+"</li>").join("")+"</ul>";
+ }catch(e){msg("cons","Não foi possível consultar. Código: "+(e.code||"desconhecido"),"err")}
+}
+$("bcons1").onclick=()=>consulta("codes","Códigos",(i,d)=>esc(i)+", "+esc(d.status)+(d.status==="resgatado"?", dono "+esc(d.ownerId):""));
+$("bcons2").onclick=()=>consulta("users","Colecionadores",(i,d)=>esc(d.apelido)+", "+esc(d.email));
+$("bcons3").onclick=()=>consulta("historico","Histórico",(i,d)=>esc(d.tipo)+" de "+esc(d.codigo)+", resultado "+esc(d.resultado));
+
+const SECS={quemsomos:"Quem somos",episodios:"Episódios",colaboradores:"Colaboradores",loja:"Loja",premios:"Prêmios"};
+let acesso=false;
+const thumb=id=>"https://drive.google.com/thumbnail?id="+id+"&sz=w1000";
+function card(x){
+ const img=x.imagemId?'<img src="'+esc(thumb(x.imagemId))+'" alt="'+esc(x.imagemAlt)+'" loading="lazy">':"";
+ let ex="";if(x.extra)ex=/^https?:\/\//.test(x.extra)?'<a class="btn" href="'+esc(x.extra)+'" target="_blank" rel="noopener">Abrir link de '+esc(x.titulo)+'</a>':'<p class="preco">'+esc(x.extra)+'</p>';
+ return '<article class="card">'+img+'<h3>'+esc(x.titulo)+'</h3>'+(x.texto?'<p>'+esc(x.texto)+'</p>':'')+ex+'</article>';
+}
+async function renderPagina(id){
+ const box=$("c_"+id);
+ if(id==="premios"&&!acesso){box.innerHTML="<p>Área exclusiva dos colaboradores. Entre com a conta liberada pela equipe do Blind Cast.</p>";return}
+ box.innerHTML="<p>Carregando.</p>";
+ try{const s=await getDoc(doc(db,"paginas",id)),d=s.exists()?s.data():{},it=d.itens||[];
+  let h=d.texto?d.texto.split("\n").filter(Boolean).map(p=>"<p>"+esc(p)+"</p>").join(""):"";
+  h+=it.length?'<div class="grid">'+it.map(card).join("")+"</div>":"<p>Ainda não há conteúdo publicado nesta aba.</p>";
+  box.innerHTML=h;
+ }catch(e){box.textContent="Não foi possível carregar esta aba. Código: "+(e.code||"desconhecido")}
+}
+onAuthStateChanged(auth,async u=>{
+ acesso=false;
+ if(u){if(u.emailVerified&&u.email.toLowerCase()===ADMIN)acesso=true;else{try{acesso=(await getDoc(doc(db,"equipe",u.email.toLowerCase()))).exists()}catch(e){}}}
+ $("liprem").hidden=!acesso;
+ const v=(location.hash||"#inicio").slice(1);if(SECS[v])renderPagina(v);
+});
+$("bitem").onclick=async()=>{
+ if(!isAdmin())return;
+ const aba=$("c_aba").value,tit=$("c_tit").value.trim(),txt=$("c_txt").value.trim(),im=$("c_img").value.trim(),alt=$("c_alt").value.trim(),ex=$("c_ext").value.trim();
+ if(!tit){msg("msgc","Digite o título do item.","err");return}
+ const iid=im?driveId(im):null;
+ if(im&&!iid){msg("msgc","Não consegui ler o link do Google Drive.","err");return}
+ if(iid&&!alt){msg("msgc","Escreva a descrição da imagem para leitor de tela.","err");return}
+ try{await setDoc(doc(db,"paginas",aba),{itens:arrayUnion({titulo:tit,texto:txt,imagemId:iid||null,imagemAlt:alt,extra:ex})},{merge:true});
+  msg("msgc","Item adicionado à aba "+SECS[aba]+".","ok");["c_tit","c_txt","c_img","c_alt","c_ext"].forEach(i=>$(i).value="")}
+ catch(e){msg("msgc","Não foi possível adicionar. Código: "+(e.code||"desconhecido"),"err")}
+};
+$("btexto").onclick=async()=>{
+ if(!isAdmin())return;const aba=$("c_aba").value,txt=$("c_txt").value.trim();
+ if(!txt){msg("msgc","Digite o texto de apresentação no campo Texto.","err");return}
+ try{await setDoc(doc(db,"paginas",aba),{texto:txt},{merge:true});msg("msgc","Texto da aba "+SECS[aba]+" salvo.","ok")}
+ catch(e){msg("msgc","Não foi possível salvar. Código: "+(e.code||"desconhecido"),"err")}
+};
+$("blistar").onclick=async()=>{
+ if(!isAdmin())return;const aba=$("c_aba").value,b=$("c_lista");
+ try{const s=await getDoc(doc(db,"paginas",aba)),it=(s.exists()&&s.data().itens)||[];
+  if(!it.length){b.innerHTML="<p>Nenhum item nesta aba.</p>";return}
+  b.innerHTML=it.map((x,i)=>'<div class="row"><span>'+(i+1)+". "+esc(x.titulo)+'</span><button type="button" data-i="'+i+'" aria-label="Remover item '+(i+1)+', '+esc(x.titulo)+'">Remover</button></div>').join("");
+  b.querySelectorAll("button").forEach(btn=>btn.onclick=async()=>{
+   try{await updateDoc(doc(db,"paginas",aba),{itens:it.filter((_,k)=>k!==+btn.dataset.i)});msg("msgc","Item removido.","ok");$("blistar").click()}
+   catch(e){msg("msgc","Não foi possível remover. Código: "+(e.code||"desconhecido"),"err")}});
+ }catch(e){msg("msgc","Não foi possível listar. Código: "+(e.code||"desconhecido"),"err")}
+};
+$("bequipe").onclick=async()=>{
+ if(!isAdmin())return;const em=$("eq_email").value.trim().toLowerCase(),nm=$("eq_nome").value.trim();
+ if(!/^\S+@\S+\.\S+$/.test(em)||!nm){msg("msgc","Digite o e-mail Gmail e o nome do colaborador.","err");return}
+ try{await setDoc(doc(db,"equipe",em),{nome:nm,criadoEm:serverTimestamp()});msg("msgc",nm+" agora tem acesso à aba Prêmios.","ok");$("eq_email").value="";$("eq_nome").value=""}
+ catch(e){msg("msgc","Não foi possível liberar. Código: "+(e.code||"desconhecido"),"err")}
+};
+$("bcons4").onclick=()=>consulta("equipe","Colaboradores liberados",(i,d)=>esc(d.nome)+", "+esc(i));
+window.addEventListener("hashchange",()=>{show();const h=document.querySelector("section:not([hidden]) h2");if(h)h.focus()});
+show();
+</script></body></html>
+```
